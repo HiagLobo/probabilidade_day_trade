@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Probabilidade</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1 class="titulo">Probabilidade</h1>
+    <p class="descricao">
+      Vários traders foram entrevistados entre vencedores e perdedores,<br />
+      atráves disso foi elaborado essa calculadora que irá simular sua
+      probabilidade nas<br />
+      operações na modalidade day trade em dólar mini, levando em
+      consideração<br />
+      um gerenciamento de risco de 4/3, uma operação por dia, operando 1 mini
+      contrato.
+    </p>
+
+    <audio id="somJogada">
+      <source src="audio/clik.mp3" type="audio/mp3" />
+    </audio>
+    <div class="frame2">
+      <div class="center2">
+        <div>
+          <p>
+            Escolha as opções que se aplicam a você:<br />(Após isso acrescente
+            o resultado no simulador de operações)
+          </p>
+          <label
+            ><input type="checkbox" id="opcao1" value="5" /> Tenho um plano de
+            trade</label
+          ><br />
+          <label
+            ><input type="checkbox" id="opcao2" value="5" /> Faço panorama
+            macroeconômico e geopolítico</label
+          ><br />
+          <label
+            ><input type="checkbox" id="opcao3" value="5" /> Analiso indicadores
+            economicos, e noticias e sei operar eles no mercado</label
+          ><br />
+          <label
+            ><input type="checkbox" id="opcao4" value="5" /> Estou
+            disciplinado</label
+          ><br />
+          <label
+            ><input type="checkbox" id="opcao5" value="5" /> Sigo meu plano e
+            não clico fora do que eu planejei</label
+          ><br />
+          <label
+            ><input type="checkbox" id="opcao6" value="10" /> Estou usando
+            dinheiro para operar que não vai me fazer falta</label
+          ><br />
+          <label
+            ><input type="checkbox" id="opcao7" value="-20" /> Estou usando
+            dinheiro que vai me fazer falta e que não posso perder</label
+          ><br />
+          <label
+            ><input type="checkbox" id="opcao8" value="-15" /> Opero a menos de
+            4 anos</label
+          ><br />
+          <label
+            ><input type="checkbox" id="opcao9" value="5" /> Opero a mais de 4
+            anos</label
+          ><br />
+        </div>
+        <div id="resultado-escolhas"></div>
+        <button onclick="calcularProbabilidade()">
+          Calcular Probabilidade
+        </button>
+        <p>Porcentagem Final: <span id="porcentagem-final">50%</span></p>
+        <p id="fase-trader"></p>
+      </div>
+    </div>
+    <div class="frame">
+      <div class="center">
+        <div id="carteira">
+          <p>Saldo: R$ <span id="saldo">0,00</span></p>
+          <p>Número de dias: <span id="contador-dias">0</span></p>
+        </div>
+        <p style="font-size: 15px">Uma operção por dia</p>
+        <p style="font-size: 15px">Acerto + 4 pts</p>
+        <p style="font-size: 15px">Erros - 3 pts</p>
+        <p>Escolha a probabilidade:</p>
+
+        <input
+          type="range"
+          id="probabilidade"
+          min="0"
+          max="100"
+          value="50"
+          oninput="atualizarPorcentagem()"
+        />
+        <p id="porcentagem">50%</p>
+        <button class="compra" onclick="escolherOpcao('compra')">Compra</button>
+        <button class="venda" onclick="escolherOpcao('venda')">Venda</button>
+        <p id="resultado"></p>
+      </div>
+    </div>
+    <script>
+      let saldo = 0; // Inicializa o saldo do jogador com 0 reais
+      let dias = 0; // Inicializa o contador de dias com 0
+
+      function escolherOpcao(opcao) {
+        let somJogada = new Audio('audio/clik.mp3');
+        somJogada.play();
+        let probabilidade = parseInt(
+          document.getElementById('probabilidade').value
+        );
+
+        if (isNaN(probabilidade) || probabilidade < 0 || probabilidade > 100) {
+          alert('Por favor, digite uma probabilidade válida de 0% a 100%.');
+          return;
+        }
+
+        let aleatorio = Math.floor(Math.random() * 101); // Gera um número aleatório entre 0 e 100
+
+        if (aleatorio <= probabilidade) {
+          if (opcao === 'compra') {
+            document.getElementById('resultado').innerHTML =
+              'Parabéns, você acertou que é COMPRA!';
+            saldo += 40; // Adiciona 40 reais ao saldo do jogador
+          } else {
+            document.getElementById('resultado').innerHTML =
+              'Parabéns, você acertou que é VENDA!';
+            saldo += 40; // Adiciona 40 reais ao saldo do jogador
+          }
+        } else {
+          if (opcao === 'compra') {
+            document.getElementById('resultado').innerHTML =
+              'Infelizmente, você errou. Era VENDA.';
+            saldo -= 30; // Subtrai 30 reais do saldo do jogador
+          } else {
+            document.getElementById('resultado').innerHTML =
+              'Infelizmente, você errou. Era COMPRA.';
+            saldo -= 30; // Subtrai 30 reais do saldo do jogador
+          }
+        }
+        var saldoElement = document.getElementById('saldo');
+        if (saldo < 0) {
+          saldoElement.style.color = '#df6759'; // saldo negativo fica vermelho
+        } else {
+          saldoElement.style.color = '#50de8e'; // saldo positivo fica verde
+        }
+        saldoElement.innerHTML = saldo.toFixed(2).replace('.', ','); // Atualiza o saldo do jogador na tela
+
+        dias++; // Incrementa o contador de dias
+
+        document.getElementById('contador-dias').innerHTML = dias; // Atualiza o número de dias na tela
+
+        atualizarFaseTrader(); // Chama a função para atualizar a fase do trader
+      }
+
+      document.getElementById('saldo').innerHTML = saldo.toFixed(2); // Atualiza o saldo do jogador na tela
+
+      function atualizarPorcentagem() {
+        let valorPorcentagem = document.getElementById('probabilidade').value;
+        document.getElementById('porcentagem').innerHTML =
+          valorPorcentagem + '%';
+      }
+
+      function calcularProbabilidade() {
+        let escolhas = document.querySelectorAll(
+          'input[type="checkbox"]:checked'
+        );
+        let porcentagemFinal = 50; // valor inicial da probabilidade
+
+        for (let escolha of escolhas) {
+          let valor = parseInt(escolha.value);
+          porcentagemFinal += valor;
+        }
+
+        document.getElementById('porcentagem-final').textContent =
+          porcentagemFinal + '%';
+
+        atualizarFaseTrader(); // Chama a função para atualizar a fase do trader
+      }
+
+      function atualizarFaseTrader() {
+        let porcentagemFinal = parseInt(
+          document.getElementById('porcentagem-final').textContent
+        );
+        let mensagem = '';
+        let emoji = '';
+
+        if (porcentagemFinal >= 0 && porcentagemFinal <= 40) {
+          mensagem = 'Você está na primeira fase do trader.';
+          emoji = '🌱'; // Emoji correspondente à primeira fase
+        } else if (porcentagemFinal >= 41 && porcentagemFinal <= 60) {
+          mensagem = 'Você está na segunda fase do trader.';
+          emoji = '🚀'; // Emoji correspondente à segunda fase
+        } else if (porcentagemFinal >= 61 && porcentagemFinal <= 70) {
+          mensagem = 'Você está na terceira fase do trader.';
+          emoji = '💼'; // Emoji correspondente à terceira fase
+        } else if (porcentagemFinal >= 71 && porcentagemFinal <= 95) {
+          mensagem = 'Você está na quarta fase do trader.';
+          emoji = '📈'; // Emoji correspondente à quarta fase
+        } else {
+          mensagem = 'Em qual das 4 fases do trader você está?';
+          emoji = '❓'; // Emoji para situações indefinidas
+        }
+
+        document.getElementById('fase-trader').textContent =
+          mensagem + ' ' + emoji;
+      }
+    </script>
+  </body>
+</html>
