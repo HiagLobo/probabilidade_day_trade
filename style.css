@@ -1,0 +1,79 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  background-color: #2e2e2e;
+}
+
+.titulo, .descricao, p, input[type='range'] {
+  color: #e6e6e6;
+  font-size: 16px;
+}
+
+.center, .center2 {
+  width: 500px;
+  margin-top: 50px;
+  color: #b2b2b2;
+}
+
+.frame, .frame2 {
+  background-color: #17243f;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  margin-top: 50px;
+}
+
+input[type='range'] {
+  width: 100%;
+}
+
+button {
+  font-size: 16px;
+  padding: 5px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  margin-top: 10px;
+}
+
+button.compra {
+  background-color: #e6a400;
+  color: #370000;
+}
+
+button.venda {
+  background-color: #1ba45d;
+  color: white;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+
+.checkbox-label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* Adicionando caixas */
+.container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-top: 50px;
+}
+
+.container .item {
+  flex-basis: calc(50% - 10px);
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.container .item:last-child {
+  margin-right: 0;
+}
